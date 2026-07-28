@@ -4,9 +4,6 @@ on:
   push:
     paths:
       - '**/*.puml'
-  pull_request:
-    paths:
-      - '**/*.puml'
 
 jobs:
   render:
