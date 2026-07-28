@@ -31,6 +31,19 @@ The platform uses a relational schema with entities including:
 
 Diagrams in the `/docs/` directory illustrate relationships and workflows.
 
+
+## Diagrams
+
+### Architecture Diagram
+![Architecture Diagram](docs/architecture/architecture.png)
+
+### Entity Relationship Diagram
+![ER Diagram](docs/data-model/er-diagram.png)
+
+### Booking Flow Diagram
+![Booking Flow](docs/flows/booking-flow.png)
+
+
 ## API Design
 
 The backend exposes a structured REST API with:

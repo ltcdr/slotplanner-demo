@@ -1,0 +1,29 @@
+@startuml
+title Slotplanner Architecture Overview
+
+node "Client Browser" {
+    component "HTML/CSS/JS Frontend" as FE
+}
+
+node "Backend Server (FastAPI)" {
+    component "Routing Layer" as ROUTES
+    component "Service Layer" as SERVICES
+    component "SQLAlchemy ORM" as ORM
+}
+
+database "SQLite (current)\nPostgreSQL (planned)" as DB
+
+cloud "Azure (planned)" {
+    node "Azure App Service"
+    node "Azure Database for PostgreSQL"
+    node "Azure Storage"
+    node "Azure Entra ID"
+    node "Azure Monitor"
+}
+
+FE --> ROUTES : HTTP Requests
+ROUTES --> SERVICES : Business Logic
+SERVICES --> ORM : DB Access
+ORM --> DB : SQL Queries
+
+@enduml

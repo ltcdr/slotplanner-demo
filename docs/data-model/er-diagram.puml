@@ -1,0 +1,57 @@
+@startuml
+title Slotplanner ER Diagram
+
+entity Client {
+    * id : int
+    --
+    name : string
+    email : string
+    phone : string
+    created_by : string
+    created_on : datetime
+    changed_by : string
+    changed_on : datetime
+}
+
+entity ClientRelative {
+    * id : int
+    --
+    client_id : int
+    name : string
+    relation : string
+}
+
+entity Activity {
+    * id : int
+    --
+    title : string
+    description : string
+    domain_id : int
+    created_by : string
+    created_on : datetime
+    changed_by : string
+    changed_on : datetime
+}
+
+entity Booking {
+    * id : int
+    --
+    client_id : int
+    activity_id : int
+    start_time : datetime
+    end_time : datetime
+    status : string
+}
+
+entity Domain {
+    * id : int
+    --
+    name : string
+}
+
+Client ||--o{ ClientRelative : has
+Client ||--o{ Booking : books
+Activity ||--o{ Booking : scheduled
+Domain ||--o{ Activity : groups
+
+@enduml
