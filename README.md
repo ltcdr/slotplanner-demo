@@ -100,14 +100,16 @@ This repository is intended for technical reviewers, recruiters, and hiring mana
 
 ## Repository Structure
 
+```
 slotplanner-showcase/
-├── README.md  
-├── .gitignore  
-├── docs/  
-│   ├── architecture/  
-│   ├── data-model/  
-│   ├── flows/  
-│   ├── api/  
-│   └── deployment/  
-├── screenshots/  
+├── README.md
+├── .gitignore
+├── docs/
+│   ├── architecture/
+│   ├── data-model/
+│   ├── flows/
+│   ├── api/
+│   └── deployment/
+├── screenshots/
 └── demo/
+```
