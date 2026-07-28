@@ -1,3 +1,5 @@
+#test-trigger for github actions workflow
+
 @startuml
 title Slotplanner Architecture Overview
 
