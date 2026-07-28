@@ -1,6 +1,6 @@
 # Slotplanner – Architecture and System Overview
 
-Slotplanner is a scheduling and resource‑management platform designed to handle bookings, activities, clients, and administrative workflows. This repository provides a public, high‑level overview of the system’s architecture, data model, API structure, and Azure deployment approach. No production code is included.
+Slotplanner is a scheduling and resource‑management platform designed to handle bookings, activities, clients, and administrative workflows. This repository provides a public, high‑level overview of the system’s architecture, data model, API structure, and Azure deployment approach. Production code is not included.
 
 ## Architecture Overview
 
@@ -9,13 +9,13 @@ Slotplanner follows a modular, service‑oriented architecture:
 - Backend: FastAPI
 - ORM/Data Layer: SQLAlchemy
 - Schemas and Validation: Pydantic
-- Frontend: React with TypeScript
+- Frontend: HTML, CSS, and JavaScript (React + TypeScript planned)
 - Hosting: Azure App Service
-- Authentication: Azure Entra ID
-- Storage: Azure Storage
+Authentication: Session-based authentication (planned migration to Azure Entra ID)
+- Storage: SQLite file-based database (planned migration to PostgreSQL)
 - CI/CD: GitHub Actions
 
-The system is organized into clear domains such as clients, activities, bookings, and administrative management.
+The system is organized into clear domains such as users, clients, relatives, activities, bookings, and administrative management.
 
 ## Data Model
 
@@ -43,18 +43,31 @@ The backend exposes a structured REST API with:
 
 Example endpoints and flows are documented in `/docs/api/`.
 
-## Azure Deployment
 
-Slotplanner is deployed on Azure using:
+## Deployment
+
+### Current Deployment
+Slotplanner currently runs locally using:
+
+- Uvicorn for backend execution
+- Caddy for reverse proxy and static file serving
+- SQLite as the local database
+- Session-based authentication
+- Local file-based storage for assets and data
+
+### Planned Azure Deployment
+A future cloud deployment is planned using Azure services:
 
 - Azure App Service for backend and frontend hosting
-- Azure Storage for static assets and data
+- Azure Database for PostgreSQL as the primary database
+- Azure Storage for static assets and backups
 - Azure Monitor for logging and metrics
-- Azure Entra ID for authentication
-- Deployment slots for staging and production
-- GitHub Actions for automated CI/CD
+- Azure Entra ID for authentication and identity management
+- Deployment slots for staging and production environments
+- GitHub Actions for automated CI/CD pipelines
 
-Deployment documentation is available in `/docs/deployment/`.
+Documentation for the planned deployment will be added in `/docs/deployment/`.
+
 
 ## Screenshots and Diagrams
 
@@ -79,6 +92,8 @@ slotplanner-showcase/
 ├── .gitignore  
 ├── docs/  
 │   ├── architecture/  
+│   ├── data-model/  
+│   ├── flows/  
 │   ├── api/  
 │   └── deployment/  
 ├── screenshots/  
