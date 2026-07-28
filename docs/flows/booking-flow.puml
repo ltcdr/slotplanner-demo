@@ -1,0 +1,26 @@
+@startuml
+title Booking Flow Sequence Diagram
+
+actor Client
+participant "Frontend\n(HTML/JS)" as FE
+participant "Backend\n(FastAPI)" as API
+participant "Service Layer" as SVC
+database "Database\n(SQLite current / PostgreSQL planned)" as DB
+
+Client -> FE : Open booking page
+FE -> API : GET /activities
+API -> SVC : Fetch activities
+SVC -> DB : SELECT activities
+DB --> SVC : Result
+SVC --> API : Activities
+API --> FE : JSON response
+
+Client -> FE : Submit booking form
+FE -> API : POST /bookings
+API -> SVC : Validate + create booking
+SVC -> DB : INSERT booking
+DB --> SVC : OK
+SVC --> API : Booking created
+API --> FE : Confirmation
+
+@enduml
