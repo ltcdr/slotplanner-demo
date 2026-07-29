@@ -14,14 +14,15 @@ app = FastAPI(
     description="Minimal demo backend with activities + bookings",
     version="1.0.0",
 )
+
 app.middleware("http")(basic_auth)
 
 # ---------------------------------------------------------
 # Serve demo frontend (HTML, CSS, JS, images)
 # ---------------------------------------------------------
 app.mount(
-    "/demo/frontend",
-    StaticFiles(directory="demo/frontend"),
+    "/",
+    StaticFiles(directory="demo/frontend", html=True),
     name="demo-frontend"
 )
 
