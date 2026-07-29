@@ -134,7 +134,6 @@ slotplanner-showcase/
 │   ├── flows/
 │   ├── api/
 │   └── deployment/
-├── screenshots/
 └── demo/
     ├── backend/        # FastAPI demo backend (activities + bookings)
     ├── frontend/       # HTML/CSS/JS demo calendar and booking UI
