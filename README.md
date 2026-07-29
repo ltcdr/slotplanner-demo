@@ -2,6 +2,31 @@
 
 Slotplanner is a scheduling and resource‑management platform designed to handle bookings, activities, clients, and administrative workflows. This repository provides a public, high‑level overview of the system’s architecture, data model, API structure, and Azure deployment approach. Production code is not included.
 
+
+## Purpose of This Repository
+
+This repository is intended for technical reviewers, recruiters, and hiring managers. It highlights the architectural design, engineering decisions, and structure of the Slotplanner system while keeping the production code private.
+
+The demo and diagrams represent architectural concepts only.
+Production logic, business rules, and full administrative workflows are intentionally omitted.
+
+
+## Demo (Activities & Booking Flow)
+The repository includes a small interactive demo located in `/demo/`.
+It showcases a simplified version of Slotplanner’s activity and booking workflow:
+
+- Weekly auto‑generated demo activities
+- Interactive calendar (HTML + CSS + JavaScript)
+- Activity modal with booking action
+- Basic booking API (POST /demo/book)
+- Bookings overview page (GET /demo/bookings)
+- Minimal SQLite‑backed FastAPI demo backend
+- Basic authentication protecting the demo pages
+
+This demo is intentionally lightweight and isolated from the production architecture.
+It exists solely to illustrate the user‑facing concepts of activities, time slots, and bookings.
+
+
 ## Architecture Overview
 
 Slotplanner follows a modular, service‑oriented architecture:
@@ -11,11 +36,12 @@ Slotplanner follows a modular, service‑oriented architecture:
 - Schemas and Validation: Pydantic
 - Frontend: HTML, CSS, and JavaScript (React + TypeScript planned)
 - Hosting: Azure App Service
-Authentication: Session-based authentication (planned migration to Azure Entra ID)
+- Authentication: Session-based authentication (planned migration to Azure Entra ID)
 - Storage: SQLite file-based database (planned migration to PostgreSQL)
 - CI/CD: GitHub Actions
 
 The system is organized into clear domains such as users, clients, relatives, activities, bookings, and administrative management.
+
 
 ## Data Model
 
@@ -68,6 +94,7 @@ Slotplanner currently runs locally using:
 - Session-based authentication
 - Local file-based storage for assets and data
 
+
 ### Planned Azure Deployment
 A future cloud deployment is planned using Azure services:
 
@@ -94,9 +121,6 @@ The `/screenshots/` and `/docs/` directories contain:
 
 These materials demonstrate the system without exposing internal implementation details.
 
-## Purpose of This Repository
-
-This repository is intended for technical reviewers, recruiters, and hiring managers. It highlights the architectural design, engineering decisions, and structure of the Slotplanner system while keeping the production code private.
 
 ## Repository Structure
 
@@ -110,6 +134,9 @@ slotplanner-showcase/
 │   ├── flows/
 │   ├── api/
 │   └── deployment/
-├── screenshots/
 └── demo/
+    ├── backend/        # FastAPI demo backend (activities + bookings)
+    ├── frontend/       # HTML/CSS/JS demo calendar and booking UI
+    └── static/         # Images and assets used by the demo
+
 ```
