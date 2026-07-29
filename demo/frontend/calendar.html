@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Demo Calendar - Slotplanner</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Demo calendar JS -->
+    <script src="demo_calendar.js" defer></script>
+</head>
+
+<body>
+
+<header>
+    <h1>Slotplanner Demo</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="calendar.html">Calendar</a>
+        <a href="bookings.html">Bookings</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h2>Weekly Demo Activities</h2>
+    <p>Click an activity to view details and book it.</p>
+</section>
+
+<section class="dashboard-section">
+    <div class="dashboard-card">
+
+        <!-- Week navigation -->
+        <div class="week-nav">
+            <button class="btn-nav-prev" onclick="changeWeek(-1)">← Previous Week</button>
+            <button class="btn-nav-current" onclick="changeWeek(0)">This Week</button>
+            <button class="btn-nav-next" onclick="changeWeek(1)">Next Week →</button>
+        </div>
+
+        <!-- Calendar -->
+        <div class="calendar-wrapper" id="demo-calendar-container">
+            <!-- Filled dynamically by demo_calendar.js -->
+        </div>
+
+        <!-- Modal -->
+        <div id="activity-modal" class="modal hidden">
+            <div class="modal-content">
+                <button type="button" class="modal-close" onclick="closeModal()">×</button>
+
+                <h3 id="modal-title"></h3>
+                <p id="modal-time"></p>
+
+                <button id="modal-book-btn" class="btn-create">Book Activity</button>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<footer>
+    © 2026 Slotplanner Demo – Minimal Activity & Booking Showcase
+</footer>
+
+</body>
+</html>

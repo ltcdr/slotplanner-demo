@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Slotplanner Demo - Bookings</title>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <h1>Slotplanner Demo</h1>
+    <nav>
+        <a href="/demo/frontend/index.html">Home</a>
+        <a href="/demo/frontend/calendar.html">Calendar</a>
+        <a href="/demo/frontend/bookings.html">Bookings</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h2>Your Demo Bookings</h2>
+    <p>
+        Below you can see all demo bookings created through the calendar.
+        This list updates automatically whenever new bookings are made.
+    </p>
+</section>
+
+<section class="features">
+    <h3>Bookings Overview</h3>
+
+    <div id="no-bookings" style="display:none; text-align:center; padding:20px; font-size:18px; color:#555;">
+        No bookings found.
+    </div>
+
+    <div class="feature-grid" id="bookings-container">
+        <!-- Booking cards will be injected here -->
+    </div>
+</section>
+
+<footer>
+    © 2026 Slotplanner Demo – Minimal Activity & Booking Showcase
+</footer>
+
+<script src="bookings.js"></script>
+</body>
+</html>
