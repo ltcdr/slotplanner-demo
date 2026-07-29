@@ -41,7 +41,7 @@ jobs:
             .
             !antenv/
 
-      # 🚫 Opting Out of Oryx Build
+      # Opting Out of Oryx Build
       # If you prefer to disable the Oryx build process during deployment, follow these steps:
       # 1. Remove the SCM_DO_BUILD_DURING_DEPLOYMENT app setting from your Azure App Service Environment variables.
       # 2. Refer to sample workflows for alternative deployment strategies: https://github.com/Azure/actions-workflow-samples/tree/master/AppService
@@ -63,9 +63,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.__clientidsecretname__ }}
-          tenant-id: ${{ secrets.__tenantidsecretname__ }}
-          subscription-id: ${{ secrets.__subscriptionidsecretname__ }}
+          client-id: ${{ 3ad975d0-6d04-4d59-ab1c-93d2306af0c5 }}
+          tenant-id: ${{ de3de62f-be92-4aa5-a184-3039941d9215 }}
+          subscription-id: ${{ 3922eabf-07fa-4bc6-bcb2-26d3ac395ca7 }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
