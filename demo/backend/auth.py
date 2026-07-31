@@ -1,9 +1,10 @@
 import base64
+import os
 from typing import Callable, Awaitable
 from fastapi import Request, Response
 
-USERNAME = "demo"
-PASSWORD = "secret123"
+USERNAME = os.getenv("DEMO_USERNAME", "")
+PASSWORD = os.getenv("DEMO_PASSWORD", "")
 
 # call_next is a function that takes a Request and returns an Awaitable[Response]
 CallNext = Callable[[Request], Awaitable[Response]]
