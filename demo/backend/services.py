@@ -7,7 +7,7 @@ from .models import Activity, Booking
 # ACTIVITIES
 # ---------------------------------------------------------
 
-def generate_weekly_activities():
+def generate_activities_this_week():
     """
     Clears the activities table and inserts realistic demo activities
     for the current week.
@@ -62,7 +62,7 @@ def get_activities():
 
     # Auto-generate if empty
     if not rows:
-        generate_weekly_activities()
+        generate_activities_this_week()
         cur.execute("SELECT * FROM activities;")
         rows = cur.fetchall()
 
@@ -77,6 +77,79 @@ def get_activities():
         )
         for row in rows
     ]
+
+
+def generate_next_week_activities():
+    """
+    Inserts realistic demo activities for NEXT week.
+    Called by Azure Functions every Friday.
+    """
+    conn = get_connection()
+    cur = conn.cursor()
+
+    today = datetime.now().date()
+    weekday = today.weekday()  # Monday = 0
+
+    # Monday of next week
+    next_monday = today + timedelta(days=(7 - weekday))
+
+    print("[INFO] Generating next week activities starting:", next_monday)
+
+    # Check if next week already exists
+    cur.execute("""
+        SELECT COUNT(*) FROM activities
+        WHERE date(start_time) >= ? AND date(start_time) < ?;
+    """, (
+        next_monday.isoformat(),
+        (next_monday + timedelta(days=7)).isoformat()
+    ))
+
+    count = cur.fetchone()[0]
+    if count > 0:
+        print("[INFO] Next week activities already exist. Skipping generation.")
+        conn.close()
+        return
+
+    def dt(day_offset, hour, minute=0):
+        """Helper to build datetime for next week's activities."""
+        d = next_monday + timedelta(days=day_offset)
+        return datetime(d.year, d.month, d.day, hour, minute)
+
+    activities = [
+        ("Breakfast", dt(0, 10), dt(0, 12)),       # Monday
+        ("Yoga Class", dt(2, 15), dt(2, 16)),      # Wednesday
+        ("Walk in the Park", dt(4, 14), dt(4, 15, 30)),  # Friday
+    ]
+
+    for title, start, end in activities:
+        cur.execute("""
+            INSERT INTO activities (title, start_time, end_time)
+            VALUES (?, ?, ?);
+        """, (title, start.isoformat(), end.isoformat()))
+
+    conn.commit()
+    conn.close()
+
+
+def cleanup_old_activities():
+    """
+    Deletes activities older than 2 weeks.
+    Called by Azure Functions weekly.
+    """
+    conn = get_connection()
+    cur = conn.cursor()
+
+    cutoff = datetime.now() - timedelta(weeks=2)
+
+    print("[INFO] Cleaning up activities older than:", cutoff)
+
+    cur.execute("""
+        DELETE FROM activities
+        WHERE end_time < ?;
+    """, (cutoff.isoformat(),))
+
+    conn.commit()
+    conn.close()
 
 
 # ---------------------------------------------------------
