@@ -2,6 +2,7 @@
 
 Slotplanner is a scheduling and resource‑management platform designed to handle bookings, activities, clients, and administrative workflows. This repository provides a public, high‑level overview of the system’s architecture, data model, API structure, and Azure deployment approach. Production code is not included.
 
+---
 
 ## Purpose of This Repository
 
@@ -10,6 +11,23 @@ This repository is intended for technical reviewers, recruiters, and hiring mana
 The demo and diagrams represent architectural concepts only.
 Production logic, business rules, and full administrative workflows are intentionally omitted.
 
+---
+
+## System Components & Related Repositories
+Slotplanner is structured as a multi‑repository system to reflect real‑world release and delivery workflows.
+This repository (slotplanner-demo) provides the public architectural overview and demo, while additional components are maintained separately:
+
+[slotplanner-demo-functions](https://github.com/ltcdr/slotplanner-demo-functions)  
+Azure Functions powering automation tasks, demo activity generation, booking workflows, and integration logic.
+Deployed independently via GitHub Actions using OIDC and Managed Identity.
+
+[slotplanner-meta](https://github.com/ltcdr/slotplanner-demo-meta)  
+The orchestration repository coordinating cross‑service releases, unified versioning, environment configuration, and deployment sequencing.
+This meta layer represents the production‑grade release management approach used for the full Slotplanner system.
+
+These repositories together illustrate a distributed architecture with independent deployment units and coordinated release processes — a core aspect of Slotplanner’s engineering and delivery design.
+
+---
 
 ## Demo (Activities & Booking Flow)
 The repository includes a small interactive demo located in `/demo/`.
@@ -26,6 +44,7 @@ It showcases a simplified version of Slotplanner’s activity and booking workfl
 This demo is intentionally lightweight and isolated from the production architecture.
 It exists solely to illustrate the user‑facing concepts of activities, time slots, and bookings.
 
+---
 
 ## Architecture Overview
 
@@ -43,7 +62,16 @@ Slotplanner follows a modular, service‑oriented architecture:
 The system is organized into clear domains such as users, clients, relatives, activities, bookings, and administrative management.
 
 
-## Data Model
+### Serverless Components
+
+Slotplanner-Demo also includes a lightweight serverless layer hosted in a
+separate repository (`slotplanner-demo-functions`). These Azure Functions
+handle demo automation tasks, booking operations, and integration workflows.
+They are deployed independently via GitHub Actions using OIDC and Managed
+Identity, illustrating multi‑service release coordination.
+
+
+### Data Model
 
 The platform uses a relational schema with entities including:
 
@@ -58,19 +86,19 @@ The platform uses a relational schema with entities including:
 Diagrams in the `/docs/` directory illustrate relationships and workflows.
 
 
-## Diagrams
+### Diagrams
 
-### Architecture Diagram
+#### Architecture Diagram
 ![Architecture Diagram](docs/architecture/architecture.png)
 
-### Entity Relationship Diagram
+#### Entity Relationship Diagram
 ![ER Diagram](docs/data-model/er-diagram.png)
 
-### Booking Flow Diagram
+#### Booking Flow Diagram
 ![Booking Flow](docs/flows/booking-flow.png)
 
 
-## API Design
+### API Design
 
 The backend exposes a structured REST API with:
 
@@ -82,6 +110,8 @@ The backend exposes a structured REST API with:
 
 Example endpoints and flows are documented in `/docs/api/`.
 
+
+---
 
 ## Deployment
 
@@ -109,6 +139,28 @@ A future cloud deployment is planned using Azure services:
 Documentation for the planned deployment will be added in `/docs/deployment/`.
 
 
+---
+
+
+## Release & Delivery Process
+
+Slotplanner uses a structured release workflow designed for reliability and
+traceability across multiple components:
+
+- Multi‑repo coordination (backend, demo frontend, Azure Functions)
+- CI/CD pipelines using GitHub Actions with OIDC authentication
+- Deployment slots for staging and production environments
+- Automated versioned deployments to Azure App Service
+- Independent release pipeline for `slotplanner-demo-functions`
+- Rollback strategy using App Service slot swaps
+- Consistent schema evolution and migration workflow
+
+A dedicated meta repository orchestrates cross‑service releases, environment
+configuration, and deployment order. This reflects a production‑grade release
+management approach suitable for distributed systems.
+
+---
+
 ## Screenshots and Diagrams
 
 The `/screenshots/` and `/docs/` directories contain:
@@ -121,6 +173,7 @@ The `/screenshots/` and `/docs/` directories contain:
 
 These materials demonstrate the system without exposing internal implementation details.
 
+---
 
 ## Repository Structure
 
@@ -140,3 +193,15 @@ slotplanner-showcase/
     └── static/         # Images and assets used by the demo
 
 ```
+
+---
+
+## Meta Repository (Overview)
+
+Slotplanner’s components are coordinated through a separate meta repository
+that manages unified versioning, deployment sequencing, shared configuration,
+and release documentation. This repository is not part of the public showcase
+but represents the production‑grade release orchestration used for the full
+system.
+
+---
