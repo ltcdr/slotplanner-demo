@@ -1,13 +1,25 @@
 import base64
 import os
 from typing import Callable, Awaitable
-from fastapi import Request, Response
+from fastapi import Request, Response, HTTPException, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+import httpx
+from jose import jwt
 
 DEMO_USERNAME = os.getenv("DEMO_USERNAME")
 DEMO_PASSWORD = os.getenv("DEMO_PASSWORD")
 
 # call_next is a function that takes a Request and returns an Awaitable[Response]
 CallNext = Callable[[Request], Awaitable[Response]]
+
+
+# Basic Auth = human users accessing HTML admin pages
+# Managed Identity = Azure Functions calling backend automation endpoints
+
+
+# ------------------------------------------------------------
+# Basic Auth Middleware for Protecting Demo Pages
+# ------------------------------------------------------------
 
 async def basic_auth(request: Request, call_next: CallNext) -> Response:
     auth = request.headers.get("Authorization")
@@ -26,3 +38,51 @@ async def basic_auth(request: Request, call_next: CallNext) -> Response:
         status_code=401,
         headers={"WWW-Authenticate": "Basic realm='slotplanner-demo'"}
     )
+
+
+# ------------------------------------------------------------
+# Managed Identity Token Validation (Azure AD)
+# ------------------------------------------------------------
+
+TENANT_ID = "de3de62f-be92-4aa5-a184-3039941d9215"
+FUNCTION_MI_OBJECT_ID = "e122f580-1216-4f66-a735-dbf334dbc1b5"
+AUDIENCE = "api://slotplanner-demo"
+
+jwks_cache = None
+bearer_scheme = HTTPBearer(auto_error=True)
+
+
+async def get_jwks():
+    global jwks_cache
+    if jwks_cache is None:
+        url = f"https://login.microsoftonline.com/{TENANT_ID}/discovery/v2.0/keys"
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(url)
+            resp.raise_for_status()
+            jwks_cache = resp.json()
+    return jwks_cache
+
+
+async def validate_managed_identity(credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme)):
+    token = credentials.credentials
+
+    jwks = await get_jwks()
+
+    try:
+        # Validate signature + issuer + audience
+        claims = jwt.decode(
+            token,
+            jwks,
+            algorithms=["RS256"],
+            audience=AUDIENCE,
+            issuer=f"https://login.microsoftonline.com/{TENANT_ID}/v2.0"
+        )
+
+        # Validate that the token belongs to your Function App MI
+        if claims.get("oid") != FUNCTION_MI_OBJECT_ID:
+            raise HTTPException(status_code=401, detail="Invalid Managed Identity")
+
+        return claims
+
+    except Exception as e:
+        raise HTTPException(status_code=401, detail=f"Invalid token: {e}")
