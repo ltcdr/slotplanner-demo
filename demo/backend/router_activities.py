@@ -1,4 +1,5 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
+from .auth import validate_managed_identity
 from .services import (
     get_activities, 
     generate_next_week_activities, 
