@@ -30,13 +30,13 @@ def get_activity(activity_id: int):
     raise HTTPException(status_code=404, detail="Activity not found")
 
 
-@router.post("/admin/generate_next_week")
+@router.post("/admin/generate_next_week", dependencies=[Depends(validate_managed_identity)])
 def admin_generate_next_week():
     generate_next_week_activities()
     return {"status": "ok", "message": "Next week activities generated"}
 
 
-@router.post("/admin/cleanup_old")
+@router.post("/admin/cleanup_old", dependencies=[Depends(validate_managed_identity)])
 def admin_cleanup_old():
     cleanup_old_activities()
     return {"status": "ok", "message": "Old activities cleaned up"}

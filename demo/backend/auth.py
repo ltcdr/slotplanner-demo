@@ -21,11 +21,27 @@ CallNext = Callable[[Request], Awaitable[Response]]
 # Basic Auth Middleware for Protecting Demo Pages
 # ------------------------------------------------------------
 
+ALLOWED_BEARER_PATHS = {
+    "/admin/generate_next_week",
+    "/admin/cleanup_old"
+}
+
 async def basic_auth(request: Request, call_next: CallNext) -> Response:
     auth = request.headers.get("Authorization")
     if auth:
         try:
             scheme, credentials = auth.split()
+
+            #Allow Bearer tokens ONLY for designated automation endpoints
+            if scheme.lower() == "bearer":
+                if request.url.path in ALLOWED_BEARER_PATHS:
+                    return await call_next(request)
+                else:
+                    return Response(
+                        status_code=401,
+                        headers={"WWW-Authenticate": "Basic realm='slotplanner-demo'"}
+                    )
+
             if scheme.lower() == "basic":
                 decoded = base64.b64decode(credentials).decode("utf-8")
                 user, pwd = decoded.split(":", 1)
@@ -46,7 +62,7 @@ async def basic_auth(request: Request, call_next: CallNext) -> Response:
 
 TENANT_ID = "de3de62f-be92-4aa5-a184-3039941d9215"
 FUNCTION_MI_OBJECT_ID = "e122f580-1216-4f66-a735-dbf334dbc1b5"
-AUDIENCE = "api://slotplanner-demo"
+AUDIENCE = "api://7354ba0f-dab1-4a16-b16d-2864021087d4"
 
 jwks_cache = None
 bearer_scheme = HTTPBearer(auto_error=True)
