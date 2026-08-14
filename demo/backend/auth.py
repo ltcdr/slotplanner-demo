@@ -91,7 +91,7 @@ async def validate_managed_identity(credentials: HTTPAuthorizationCredentials = 
             jwks,
             algorithms=["RS256"],
             audience=AUDIENCE,
-            issuer=f"https://login.microsoftonline.com/{TENANT_ID}/"
+            issuer=f"https://sts.windows.net/{TENANT_ID}/"
         )
 
         # Validate that the token belongs to your Function App MI
