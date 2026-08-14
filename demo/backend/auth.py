@@ -82,6 +82,10 @@ async def get_jwks():
 async def validate_managed_identity(credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme)):
     token = credentials.credentials
 
+    # Check what Azure actually sends (v1 or v2) 
+    unverified_claims = jwt.get_unverified_claims(token)
+    print(f"DEBUG - Actual Issuer received from Azure: {unverified_claims.get('iss')}")
+
     jwks = await get_jwks()
 
     try:
