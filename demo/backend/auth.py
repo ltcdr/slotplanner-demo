@@ -22,8 +22,8 @@ CallNext = Callable[[Request], Awaitable[Response]]
 # ------------------------------------------------------------
 
 ALLOWED_BEARER_PATHS = {
-    "/admin/generate_next_week",
-    "/admin/cleanup_old"
+    "/demo/admin/generate_next_week",
+    "/demo/admin/cleanup_old"
 }
 
 async def basic_auth(request: Request, call_next: CallNext) -> Response:
