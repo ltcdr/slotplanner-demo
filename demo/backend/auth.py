@@ -82,10 +82,6 @@ async def get_jwks():
 async def validate_managed_identity(credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme)):
     token = credentials.credentials
 
-    # Check what Azure actually sends (v1 or v2) 
-    unverified_claims = jwt.get_unverified_claims(token)
-    print(f"DEBUG - Actual Issuer received from Azure: {unverified_claims.get('iss')}")
-
     jwks = await get_jwks()
 
     try:
@@ -95,7 +91,7 @@ async def validate_managed_identity(credentials: HTTPAuthorizationCredentials = 
             jwks,
             algorithms=["RS256"],
             audience=AUDIENCE,
-            issuer=f"https://login.microsoftonline.com/{TENANT_ID}/v2.0"
+            issuer=f"https://login.microsoftonline.com/{TENANT_ID}/"
         )
 
         # Validate that the token belongs to your Function App MI
