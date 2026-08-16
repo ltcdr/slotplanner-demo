@@ -6,8 +6,6 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import httpx
 from jose import jwt
 
-DEMO_USERNAME = os.getenv("DEMO_USERNAME")
-DEMO_PASSWORD = os.getenv("DEMO_PASSWORD")
 
 # call_next is a function that takes a Request and returns an Awaitable[Response]
 CallNext = Callable[[Request], Awaitable[Response]]
@@ -26,13 +24,19 @@ ALLOWED_BEARER_PATHS = {
     "/demo/admin/cleanup_old"
 }
 
+def get_demo_credentials_from_env():
+    return (
+        os.getenv("DEMO_USERNAME"),
+        os.getenv("DEMO_PASSWORD")
+    )
+
 async def basic_auth(request: Request, call_next: CallNext) -> Response:
     auth = request.headers.get("Authorization")
     if auth:
         try:
             scheme, credentials = auth.split()
 
-            #Allow Bearer tokens ONLY for designated automation endpoints
+            #Allow bearer tokens ONLY for designated automation endpoints
             if scheme.lower() == "bearer":
                 if request.url.path in ALLOWED_BEARER_PATHS:
                     return await call_next(request)
@@ -42,10 +46,12 @@ async def basic_auth(request: Request, call_next: CallNext) -> Response:
                         headers={"WWW-Authenticate": "Basic realm='slotplanner-demo'"}
                     )
 
+            #If bearer token was not present in scheme, check for basic auth
             if scheme.lower() == "basic":
+                user_env, pwd_env = get_demo_credentials_from_env()
                 decoded = base64.b64decode(credentials).decode("utf-8")
                 user, pwd = decoded.split(":", 1)
-                if user == DEMO_USERNAME and pwd == DEMO_PASSWORD:
+                if user == user_env and pwd == pwd_env:
                     return await call_next(request)
         except Exception:
             pass
