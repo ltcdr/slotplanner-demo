@@ -1,9 +1,9 @@
 from pathlib import Path
 
 from fastapi import FastAPI
-from demo.backend.auth import basic_auth
 from fastapi.staticfiles import StaticFiles
 
+from .auth import basic_auth
 from .db import init_db
 from .router_activities import router as activities_router
 from .router_bookings import router as bookings_router
