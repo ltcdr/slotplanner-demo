@@ -18,7 +18,13 @@ sys.path.append(str(BACKEND_ROOT))
 
 
 # --- IMPORT FASTAPI APP ------------------------------------------------------
-from services.slotplanner_demo.demo.backend.main import app
+try:
+    # Running inside the meta repo
+    from services.slotplanner_demo.demo.backend.main import app
+except ModuleNotFoundError:
+    # Running inside the standalone submodule
+    from demo.backend.main import app
+
 from fastapi.testclient import TestClient
 
 
