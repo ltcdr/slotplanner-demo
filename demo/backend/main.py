@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from fastapi import FastAPI
 from demo.backend.auth import basic_auth
 from fastapi.staticfiles import StaticFiles
@@ -5,6 +7,10 @@ from fastapi.staticfiles import StaticFiles
 from .db import init_db
 from .router_activities import router as activities_router
 from .router_bookings import router as bookings_router
+
+
+# Get path string from here to frontend folder
+FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
 
 
 # Initialize SQLite database
@@ -39,6 +45,6 @@ def health_check():
 # ---------------------------------------------------------
 app.mount(
     "/",
-    StaticFiles(directory="demo/frontend", html=True),
+    StaticFiles(directory=FRONTEND_DIR, html=True),
     name="demo-frontend"
 )
