@@ -1,0 +1,9 @@
+[run]
+data_file = coverage/.coverage
+
+[report]
+omit =
+    */tests/*
+    */.venv/*
+    */ci_artifacts/*
+    */htmlcov/*

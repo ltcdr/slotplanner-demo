@@ -39,3 +39,8 @@ Thumbs.db
 
 # Azure
 .azure/
+
+# Test artifacts
+ci_artifacts/
+tests/artifacts/
+coverage/
