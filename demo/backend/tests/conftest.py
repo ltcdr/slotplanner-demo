@@ -1,20 +1,5 @@
-import sys
-from pathlib import Path
 import pytest
 from pytest import MonkeyPatch
-
-
-# --- PATH SETUP --------------------------------------------------------------
-ROOT = Path(__file__).resolve().parents[1]
-
-SERVICE_ROOT = ROOT / "services" / "slotplanner_demo"
-DEMO_ROOT = SERVICE_ROOT / "demo"
-BACKEND_ROOT = DEMO_ROOT / "backend"
-
-sys.path.append(str(ROOT))
-sys.path.append(str(SERVICE_ROOT))
-sys.path.append(str(DEMO_ROOT))
-sys.path.append(str(BACKEND_ROOT))
 
 
 # --- IMPORT FASTAPI APP ------------------------------------------------------
@@ -51,10 +36,18 @@ def mock_db(monkeypatch: MonkeyPatch):
     def fake_get_db():
         yield FakeSession()
 
-    monkeypatch.setattr(
-        "services.slotplanner_demo.demo.backend.db.get_db",
-        fake_get_db
-    )
+    try:
+        # Meta repo path
+        monkeypatch.setattr(
+            "services.slotplanner_demo.demo.backend.db.get_db",
+            fake_get_db
+        )
+    except ModuleNotFoundError:
+        # Standalone submodule path
+        monkeypatch.setattr(
+            "demo.backend.db.get_db",
+            fake_get_db
+        )
 
 
 @pytest.fixture
