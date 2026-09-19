@@ -8,6 +8,7 @@ instance/
 .env
 .env.*
 .venv
+venv
 
 # SQLAlchemy / Alembic
 alembic.ini
@@ -44,3 +45,6 @@ Thumbs.db
 ci_artifacts/
 tests/artifacts/
 coverage/
+
+# Scripts on VM for manual trigger of creation of activities for next week
+demo/manually_trigger_next_week_activities_generation.py
